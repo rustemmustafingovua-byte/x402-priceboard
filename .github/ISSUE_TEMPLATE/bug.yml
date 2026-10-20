@@ -1,0 +1,23 @@
+name: 🐛 Bug
+description: Something does not behave as documented.
+labels: ["🐛 Bug"]
+body:
+  - type: input
+    id: what
+    attributes:
+      label: What happened
+      description: What you expected, and what you got instead.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction
+      description: The smallest command or snippet that shows it.
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: Version and environment
+      description: Output of `node -v` and the tool version.

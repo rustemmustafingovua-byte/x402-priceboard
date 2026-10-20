@@ -1,0 +1,16 @@
+name: ✨ Feature
+description: An idea or a gap you hit.
+labels: ["✨ Feature"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What are you trying to do that is hard today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: What you think should happen, and what it should look like.

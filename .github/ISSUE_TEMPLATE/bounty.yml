@@ -1,0 +1,16 @@
+name: 💰 Reward
+description: Anyone can fund this with "/reward <amount>" (Opire) or via Algora. The reward is paid to the merged PR, not to the repo owner.
+labels: ["💰 Reward"]
+body:
+  - type: input
+    id: amount
+    attributes:
+      label: Suggested reward (USDC)
+      placeholder: "25"
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: What must be true for this to be done? Be specific.
+    validations:
+      required: true
