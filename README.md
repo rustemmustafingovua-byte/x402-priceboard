@@ -23,9 +23,18 @@ Every x402 server answers the first request with its price, network and payee. x
 ## Install
 
 ```bash
-npm i -g x402-priceboard
+# tarball из релиза: без токена и без npm-логина
+npm i -g https://github.com/rustemmustafingovua-byte/x402-priceboard/releases/download/v0.1.0/x402-priceboard-0.1.0.tgz
 ```
 
+<details>
+<summary>Через GitHub Packages</summary>
+
+```bash
+npm i -g @rustemmustafingovua-byte/x402-priceboard --registry=https://npm.pkg.github.com
+```
+
+</details>
 ## What it does
 
 | | |
