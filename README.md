@@ -43,6 +43,23 @@ x402-priceboard https://api.venice.ai/api/v1/chat/completions
 x402-priceboard --file endpoints.txt --markdown
 ```
 
+## CLI
+
+```
+x402-priceboard — The price list of x402 endpoints, without paying anything.
+
+USAGE
+  x402-priceboard https://api.venice.ai/api/v1/chat/completions
+  x402-priceboard --file endpoints.txt --markdown
+
+COMMANDS / OPTIONS
+  --file <path>  read the endpoint list from a file
+  --post         send POST instead of GET when probing
+  --markdown     render the board as Markdown
+
+MIT · https://github.com/rustemmustafingovua-byte
+```
+
 ## Part of a portfolio
 
 | Project | What it does |
