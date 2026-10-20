@@ -1,0 +1,44 @@
+{
+  "name": "x402-priceboard",
+  "version": "0.1.0",
+  "description": "Every x402 server answers the first request with its price, network and payee. x402-priceboard asks a list of endpoints for those terms and prints a price board — no payment, no wallet, no key.",
+  "type": "module",
+  "license": "MIT",
+  "bin": {
+    "x402-priceboard": "bin/x402-priceboard.js"
+  },
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "x402",
+    "usdc",
+    "base",
+    "solana",
+    "pricing",
+    "agents",
+    "micropayments",
+    "crypto"
+  ],
+  "files": [
+    "bin",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "lint": "node --check src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rustemmustafingovua-byte/x402-priceboard.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rustemmustafingovua-byte/x402-priceboard/issues"
+  },
+  "homepage": "https://github.com/rustemmustafingovua-byte/x402-priceboard"
+}
