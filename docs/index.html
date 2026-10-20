@@ -2,35 +2,77 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>x402-priceboard — The price list of x402 endpoints, without paying anything.</title>
-<meta name="description" content="Every x402 server answers the first request with its price, network and payee. x402-priceboard asks a list of endpoints for those terms and prints a price board — no payment, no wallet, no key.">
+<meta name="description" content="The price list of x402 endpoints, without paying anything.">
+<meta property="og:title" content="x402-priceboard">
+<meta property="og:description" content="The price list of x402 endpoints, without paying anything.">
+<meta property="og:image" content="https://raw.githubusercontent.com/rustemmustafingovua-byte/x402-priceboard/main/docs/social-preview.png">
 <style>
-  :root{--accent:#a371f7;--bg:#0a0c10;--fg:#e6edf3;--muted:#8b949e;--line:#21262d}
+  :root{--accent:#a371f7;--bg:#0a0c10;--panel:#0f141a;--fg:#e6edf3;--muted:#8b949e;--line:#1d222a}
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif}
-  .wrap{max-width:860px;margin:0 auto;padding:72px 28px 96px}
-  h1{font-size:42px;letter-spacing:-.025em;margin:0 0 12px}
-  .sub{color:#c9d1d9;font-size:20px;margin:0 0 26px}
-  p{color:#b6bec8}
-  pre{background:#11161d;border:1px solid var(--line);border-radius:12px;padding:16px 18px;overflow:auto;font:13.5px/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace}
-  code{font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;font-size:.93em}
-  p code{background:#161b22;border:1px solid var(--line);padding:1.5px 6px;border-radius:6px}
-  a{color:var(--accent)}
-  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:14.5px}
-  th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line)}
-  th{color:var(--muted)}
-  .cta{display:inline-block;background:var(--accent);color:#07100a;font-weight:700;padding:11px 20px;border-radius:10px;text-decoration:none;margin:8px 10px 0 0}
+  body{margin:0;background:radial-gradient(900px 500px at 10% -10%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 60%), var(--bg);
+       color:var(--fg);font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif}
+  .wrap{max-width:920px;margin:0 auto;padding:64px 24px 100px}
+  .chip{display:inline-block;padding:6px 13px;border-radius:999px;background:color-mix(in srgb, var(--accent) 16%, transparent);
+        border:1px solid color-mix(in srgb, var(--accent) 40%, transparent);color:var(--accent);font-size:13px;font-weight:600;margin-bottom:20px}
+  h1{font-size:clamp(32px,5vw,46px);letter-spacing:-.03em;line-height:1.08;margin:0 0 14px}
+  h2{font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:52px 0 16px}
+  p{color:#b6bec8;margin:0 0 14px}
+  .lede{font-size:19px;color:#c9d1d9;margin:0 0 20px}
+  .grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+  .card{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:var(--panel)}
+  .card b{display:block;margin-bottom:5px}
+  .card span{color:var(--muted);font-size:14px}
+  .row{display:grid;grid-template-columns:minmax(190px,auto) 1fr;gap:14px;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--line)}
+  .row code{background:#11161d;border:1px solid var(--line);padding:4px 9px;border-radius:7px;font-size:13.5px;white-space:pre-wrap}
+  .row span{color:#b6bec8;font-size:15px}
+  details{border:1px solid var(--line);border-radius:10px;padding:12px 16px;background:var(--panel);margin-bottom:8px}
+  summary{cursor:pointer;font-weight:600}
+  details p{margin:10px 0 2px}
+  ol{padding-left:20px;color:#b6bec8}
+  ol li{margin:6px 0}
+  .cta{display:inline-block;background:var(--accent);color:#06120a;font-weight:700;padding:11px 20px;border-radius:10px;text-decoration:none;margin:8px 10px 0 0}
   .cta.ghost{background:transparent;color:var(--fg);border:1px solid var(--line)}
-  footer{margin-top:60px;padding-top:24px;border-top:1px solid var(--line);color:#6e7681;font-size:14px}
+  footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);color:#6e7681;font-size:13.5px;display:flex;gap:16px;flex-wrap:wrap}
 </style></head><body><div class="wrap">
-<h1>x402-priceboard</h1>
-<p class="sub">The price list of x402 endpoints, without paying anything.</p>
-<p>Every x402 server answers the first request with its price, network and payee. x402-priceboard asks a list of endpoints for those terms and prints a price board — no payment, no wallet, no key.</p>
-<h2>Install</h2>
-<pre><code>npm i -g x402-priceboard</code></pre>
-<h2>Usage</h2>
-<pre><code>x402-priceboard https://api.venice.ai/api/v1/chat/completions
-x402-priceboard --file endpoints.txt --markdown</code></pre>
+<span class="chip">x402-priceboard</span>
+<h1>The price list of x402 endpoints, without paying anything.</h1>
+<p class="lede">Every x402 server answers the first request with the price, the network and the payee. This asks a list of endpoints for those terms, normalises them and prints a price board. No wallet, no key, no payment.</p>
 <a class="cta" href="https://github.com/rustemmustafingovua-byte/x402-priceboard">View on GitHub</a>
-<a class="cta ghost" href="https://github.com/rustemmustafingovua-byte/x402-priceboard/releases">Releases</a>
-<footer>x402-priceboard · MIT · USDC on Base: <code>0x8aC6a229f254980CCd3Dd35CF5E1B7c08880B40E</code></footer>
+<a class="cta ghost" href="https://www.npmjs.com/package/x402-priceboard">npm</a>
+<a class="cta ghost" href="https://github.com/rustemmustafingovua-byte/x402-priceboard#readme">README</a>
+
+<h2>What it does</h2>
+<div class="grid">
+<div class="card"><b>Reads the 402 terms</b><span>Price, network, asset and payee.</span></div>
+<div class="card"><b>Normalised networks</b><span>Base, Ethereum and Solana in one column.</span></div>
+<div class="card"><b>Cheapest first</b><span>The board sorts by what a call actually costs.</span></div>
+<div class="card"><b>Free endpoints too</b><span>A 200 means no payment is needed at all.</span></div>
+</div>
+
+<h2>Usage</h2>
+<div class="row"><code>One endpoint</code><span>x402-priceboard https://api.venice.ai/api/v1/chat/completions</span></div>
+<div class="row"><code>A list</code><span>x402-priceboard --file endpoints.txt</span></div>
+<div class="row"><code>For a README</code><span>x402-priceboard --file endpoints.txt --markdown</span></div>
+
+<h2>How it works</h2>
+<ol>
+  <li>The probe sends one request and reads the payment-required header.</li>
+  <li>The header is base64 JSON, decoded and normalised into rows.</li>
+</ol>
+
+<h2>Questions</h2>
+(rows) =>
+    rows
+      .map(
+        ([q, a]) =>
+          `<details><summary>${q}</summary><p>${a}</p></details>`,
+      )
+      .join("\n")
+
+<footer>
+  <span>x402-priceboard · MIT</span>
+  <a href="https://github.com/rustemmustafingovua-byte/x402-priceboard">source</a>
+  <a href="https://github.com/rustemmustafingovua-byte/x402-priceboard/issues">issues</a>
+  <span>USDC on Base: <code>0x8aC6a229f254980CCd3Dd35CF5E1B7c08880B40E</code></span>
+</footer>
 </div></body></html>
