@@ -1,7 +1,7 @@
 {
   "name": "x402-priceboard",
   "version": "0.1.0",
-  "description": "Every x402 server answers the first request with its price, network and payee. x402-priceboard asks a list of endpoints for those terms and prints a price board — no payment, no wallet, no key.",
+  "description": "Every x402 server answers the first request with its price, network and payee. x402-priceboard asks a list of endpoints for those terms and prints a price board \u2014 no payment, no wallet, no key.",
   "type": "module",
   "license": "MIT",
   "bin": {
@@ -40,5 +40,10 @@
   "bugs": {
     "url": "https://github.com/rustemmustafingovua-byte/x402-priceboard/issues"
   },
-  "homepage": "https://github.com/rustemmustafingovua-byte/x402-priceboard"
+  "homepage": "https://github.com/rustemmustafingovua-byte/x402-priceboard",
+  "funding": {
+    "custom": [
+      "https://github.com/sponsors/rustemmustafingovua-byte"
+    ]
+  }
 }

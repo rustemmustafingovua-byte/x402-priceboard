@@ -20,6 +20,14 @@
 
 Every x402 server answers the first request with its price, network and payee. x402-priceboard asks a list of endpoints for those terms and prints a price board — no payment, no wallet, no key.
 
+## Quick Start
+
+```bash
+git clone https://github.com/rustemmustafingovua-byte/x402-priceboard.git
+cd x402-priceboard && npm install
+npm test
+```
+
 ## Install
 
 ```bash
@@ -38,7 +46,10 @@ npm i -g @rustemmustafingovua-byte/x402-priceboard --registry=https://npm.pkg.gi
 ## What it does
 
 | | |
-|---|---|
+|
+
+⭐ **Star us on GitHub** — it helps others find the project.
+---|---|
 | **Reads the 402 terms** | price, network, asset and payee |
 | **Normalises networks** | Base, Ethereum, Solana |
 | **Cheapest option per endpoint** | the board sorts by price |
@@ -93,6 +104,12 @@ Every tool here is MIT and free. If it saved you time, you can support the work:
 - **GitHub Sponsors:** https://github.com/sponsors/rustemmustafingovua-byte
 
 Paid tiers of the hosted services are billed per call in USDC (x402) — no accounts, no keys.
+
+## Monetization
+
+This project earns through x402 micropayments, API key tiers, and hosted subscriptions. See package.json `funding` field and the live deployment for pay-per-call pricing.
+
+---
 
 ## License
 
