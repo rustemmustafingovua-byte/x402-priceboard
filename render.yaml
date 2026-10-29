@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: x402-priceboard
+    runtime: docker
+    plan: starter
+    healthCheckPath: /health
+    envVars:
+      - key: PORT
+        value: "8080"
+      - key: X402_NETWORK
+        value: eip155:8453
+      - key: X402_PROBE_AMOUNT
+        value: "10000"
+      - key: X402_FEATURED_AMOUNT
+        value: "1000000"
+      - key: X402_FEATURED_HOURS
+        value: "168"
+      - key: X402_PAY_TO
+        sync: false
+      - key: X402_FACILITATOR_URL
+        sync: false
+      - key: X402_FACILITATOR_TOKEN
+        sync: false
+      - key: X402_PUBLIC_URL
+        sync: false
+      - key: TRUST_PROXY
+        value: "1"

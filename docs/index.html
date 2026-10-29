@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>x402-priceboard — The price list of x402 endpoints, without paying anything.</title>
-<meta name="description" content="The price list of x402 endpoints, without paying anything.">
+<meta name="description" content="The price list of x402 endpoints, browsable without paying. Agents pay per fresh probe. Sellers pay to be featured.">
 <meta property="og:title" content="x402-priceboard">
 <meta property="og:description" content="The price list of x402 endpoints, without paying anything.">
 <meta property="og:image" content="https://raw.githubusercontent.com/rustemmustafingovua-byte/x402-priceboard/main/docs/social-preview.png">
@@ -33,46 +33,45 @@
   .cta{display:inline-block;background:var(--accent);color:#06120a;font-weight:700;padding:11px 20px;border-radius:10px;text-decoration:none;margin:8px 10px 0 0}
   .cta.ghost{background:transparent;color:var(--fg);border:1px solid var(--line)}
   footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);color:#6e7681;font-size:13.5px;display:flex;gap:16px;flex-wrap:wrap}
+  a{color:var(--accent)}
 </style></head><body><div class="wrap">
 <span class="chip">x402-priceboard</span>
 <h1>The price list of x402 endpoints, without paying anything.</h1>
-<p class="lede">Every x402 server answers the first request with the price, the network and the payee. This asks a list of endpoints for those terms, normalises them and prints a price board. No wallet, no key, no payment.</p>
+<p class="lede">Every x402 server answers the first request with the price, the network and the payee. This asks a list of endpoints for those terms and prints a price board. Browsing the board does not pay anyone.</p>
 <a class="cta" href="https://github.com/rustemmustafingovua-byte/x402-priceboard">View on GitHub</a>
-<a class="cta ghost" href="https://www.npmjs.com/package/x402-priceboard">npm</a>
-<a class="cta ghost" href="https://github.com/rustemmustafingovua-byte/x402-priceboard#readme">README</a>
+<a class="cta ghost" href="https://github.com/rustemmustafingovua-byte/x402-priceboard#start-earning">Start earning</a>
 
 <h2>What it does</h2>
 <div class="grid">
-<div class="card"><b>Reads the 402 terms</b><span>Price, network, asset and payee.</span></div>
-<div class="card"><b>Normalised networks</b><span>Base, Ethereum and Solana in one column.</span></div>
-<div class="card"><b>Cheapest first</b><span>The board sorts by what a call actually costs.</span></div>
-<div class="card"><b>Free endpoints too</b><span>A 200 means no payment is needed at all.</span></div>
+<div class="card"><b>Reads the 402 terms</b><span>Price, network, asset and payee, with no wallet on the reader.</span></div>
+<div class="card"><b>Free board</b><span>A web page and <code>GET /api/prices</code> for the operator's catalog.</span></div>
+<div class="card"><b>Paid probe</b><span><code>GET /api/v1/probe</code> charges USDC over x402 for one fresh lookup.</span></div>
+<div class="card"><b>Featured listings</b><span>Sellers pay to pin an endpoint on the free board.</span></div>
 </div>
 
 <h2>Usage</h2>
 <div class="row"><code>One endpoint</code><span>x402-priceboard https://api.venice.ai/api/v1/chat/completions</span></div>
 <div class="row"><code>A list</code><span>x402-priceboard --file endpoints.txt</span></div>
-<div class="row"><code>For a README</code><span>x402-priceboard --file endpoints.txt --markdown</span></div>
+<div class="row"><code>Hosted board</code><span>npm start, then open /. Set X402_PAY_TO before paid routes turn on.</span></div>
 
 <h2>How it works</h2>
 <ol>
   <li>The probe sends one request and reads the payment-required header.</li>
-  <li>The header is base64 JSON, decoded and normalised into rows.</li>
+  <li>The header is base64 JSON (or raw JSON), decoded and normalised into rows.</li>
+  <li>The free board shows the cheapest row per catalog URL. It never attaches a payment signature.</li>
+  <li>Paid routes answer 402 with PAYMENT-REQUIRED until a facilitator verifies and settles the buyer's signature into X402_PAY_TO.</li>
 </ol>
 
 <h2>Questions</h2>
-(rows) =>
-    rows
-      .map(
-        ([q, a]) =>
-          `<details><summary>${q}</summary><p>${a}</p></details>`,
-      )
-      .join("\n")
+<details><summary>Do I pay to look at the board?</summary><p>No. The CLI, the HTML page and <code>GET /api/prices</code> only read public 402 terms. Payment starts when an agent calls <code>/api/v1/probe</code> or a seller calls <code>/api/v1/featured</code>.</p></details>
+<details><summary>Where does the money go?</summary><p>Into the wallet in <code>X402_PAY_TO</code>. There is no built-in address. This server does not hold a private key; a facilitator you configure submits the buyer's signed transfer.</p></details>
+<details><summary>What do I set before the paid API will charge?</summary><p><code>X402_PAY_TO</code> and <code>X402_FACILITATOR_URL</code>. Until both are set, those routes return 503 and the free board keeps working. The public x402.org facilitator is for testnet only, so it will not settle Base mainnet USDC.</p></details>
+<details><summary>What is a featured listing?</summary><p>A paid pin. The default is 1000000 atomic units ($1 of 6-decimal USDC) for 168 hours, then the row drops off the free board.</p></details>
 
 <footer>
   <span>x402-priceboard · MIT</span>
   <a href="https://github.com/rustemmustafingovua-byte/x402-priceboard">source</a>
   <a href="https://github.com/rustemmustafingovua-byte/x402-priceboard/issues">issues</a>
-  <span>USDC on Base: <code>0x8aC6a229f254980CCd3Dd35CF5E1B7c08880B40E</code></span>
+  <span>Tips, separate from API revenue: <code>0x8aC6a229f254980CCd3Dd35CF5E1B7c08880B40E</code></span>
 </footer>
 </div></body></html>

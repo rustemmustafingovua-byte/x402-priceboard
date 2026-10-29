@@ -9,10 +9,13 @@ const skip = LIVE ? false : "set LIVE=1 to run the integration test"
 import { board } from "../src/index.js"
 
 test("reads the real price of an x402 endpoint", { skip }, async () => {
-  const data = await board(["https://api.venice.ai/api/v1/chat/completions"], { method: "GET" })
-  assert.ok(data.results.length === 1)
-  if (data.rows.length) {
-    assert.ok(data.rows[0].amountUsd > 0)
-    assert.ok(data.rows[0].network.includes("8453") || data.rows[0].network.includes("solana"))
-  }
+  const data = await board(
+    [{ url: "https://api.venice.ai/api/v1/chat/completions", method: "POST" }],
+    { method: "POST", body: {} },
+  )
+  assert.equal(data.results.length, 1)
+  assert.ok(data.rows.length >= 1)
+  assert.ok(data.rows.some((row) => row.networkName === "Base"))
+  assert.ok(data.rows.some((row) => row.networkName === "Solana"))
+  assert.ok(data.cheapest[0].amountUsd > 0)
 })

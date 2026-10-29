@@ -1,11 +1,12 @@
 {
   "name": "x402-priceboard",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Every x402 server answers the first request with its price, network and payee. x402-priceboard asks a list of endpoints for those terms and prints a price board \u2014 no payment, no wallet, no key.",
   "type": "module",
   "license": "MIT",
   "bin": {
-    "x402-priceboard": "bin/x402-priceboard.js"
+    "x402-priceboard": "bin/x402-priceboard.js",
+    "x402-priceboard-server": "src/server.js"
   },
   "exports": {
     ".": "./src/index.js"
@@ -26,12 +27,14 @@
   "files": [
     "bin",
     "src",
+    "data/catalog.json",
     "README.md",
     "LICENSE"
   ],
   "scripts": {
+    "start": "node src/server.js",
     "test": "node --test test/*.test.js",
-    "lint": "node --check src/index.js"
+    "lint": "node --check src/index.js && node --check src/cli.js && node --check src/server.js && node --check src/payment.js && node --check src/ssrf.js && node --check src/store.js && node --check src/html.js && node --check bin/x402-priceboard.js"
   },
   "repository": {
     "type": "git",
