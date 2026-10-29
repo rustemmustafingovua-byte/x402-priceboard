@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for helping make agent setups work.
+Thanks for helping make the price board accurate.
 
 ## Ground rules
 
@@ -8,6 +8,7 @@ Thanks for helping make agent setups work.
 - no runtime dependencies unless the tool genuinely needs them
 - every behaviour change comes with a test
 - comments explain **why**, not **what**
+- do not put a receiving wallet, facilitator token, or `.env` in a commit
 
 ## Getting set up
 
@@ -18,19 +19,21 @@ npm install
 npm test
 ```
 
-## Adding a provider / source / rule
+## Where things live
 
-Most of these tools are one declarative file plus a router:
-
-| Tool | Where the data lives |
+| Piece | File |
 |---|---|
-| opencode-free-stack | `src/providers.js` |
-| free-web-mcp | `src/index.js` (one function per source) |
-| agent-x402 | `src/x402.js` (protocol) + `src/policy.js` (limits) |
-| prompt-injection-guard | `PATTERNS` in `src/index.js` |
-| readme-doctor | `CHECKS` in `src/index.js` |
+| Probe, rows, markdown | `src/index.js` |
+| CLI | `src/cli.js`, `bin/x402-priceboard.js` |
+| HTTP board and paid routes | `src/server.js` |
+| x402 challenge, verify, settle | `src/payment.js` |
+| Public-URL check | `src/ssrf.js` |
+| Featured listings | `src/store.js` |
+| Free catalog | `data/catalog.json` |
 
-Adding an entry should not require touching any other file.
+The free board only lists the catalog plus listings someone paid to feature.
+A new public endpoint belongs in the catalog, not in a code change, unless
+the network label table in `src/index.js` needs a name for it.
 
 ## Pull requests
 

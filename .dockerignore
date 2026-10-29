@@ -1,0 +1,9 @@
+node_modules
+.git
+.github
+test
+docs
+*.log
+.env
+*.tgz
+data/featured.json

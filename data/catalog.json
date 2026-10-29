@@ -1,0 +1,6 @@
+[
+  {
+    "url": "https://api.venice.ai/api/v1/chat/completions",
+    "method": "POST"
+  }
+]
