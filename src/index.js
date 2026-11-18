@@ -1,3 +1,7 @@
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs"
+import { homedir } from "node:os"
+import { join, dirname } from "node:path"
+
 /**
  * x402-priceboard — what does an x402 endpoint actually cost?
  *
@@ -93,3 +97,72 @@ export function toMarkdown(data) {
   }
   return lines.join("\n")
 }
+
+export function getDefaultHistoryPath() {
+  return process.env.X402_HISTORY_FILE || join(homedir(), ".x402-priceboard", "history.json")
+}
+
+/** Load history store from file. */
+export function loadHistory(filePath = getDefaultHistoryPath()) {
+  if (!existsSync(filePath)) return {}
+  try {
+    return JSON.parse(readFileSync(filePath, "utf8"))
+  } catch {
+    return {}
+  }
+}
+
+/**
+ * Record prices per endpoint per day.
+ * Returns the updated in-memory store.
+ */
+export function recordHistory(rows, { filePath = getDefaultHistoryPath(), date = new Date().toISOString().slice(0, 10) } = {}) {
+  const store = loadHistory(filePath)
+  if (!rows || !rows.length) return store
+
+  for (const r of rows) {
+    if (!r?.url) continue
+    if (!store[r.url]) store[r.url] = {}
+    store[r.url][date] = {
+      date,
+      amountUsd: r.amountUsd,
+      network: r.networkName || r.network,
+      payTo: r.payTo,
+      timestamp: Date.now(),
+    }
+  }
+
+  try {
+    mkdirSync(dirname(filePath), { recursive: true })
+    writeFileSync(filePath, JSON.stringify(store, null, 2), "utf8")
+  } catch (err) {
+    // If running in a read-only environment or unable to write, return store without throwing
+  }
+  return store
+}
+
+/** Format history series into a readable log output. */
+export function formatHistory(store, targetUrls) {
+  const urls = targetUrls && targetUrls.length ? targetUrls : Object.keys(store)
+  if (!urls.length) {
+    return "\n  (no historical price records found)\n"
+  }
+
+  const lines = []
+  for (const u of urls) {
+    const entries = store[u]
+    lines.push(`\n  History for ${u}:`)
+    if (!entries || Object.keys(entries).length === 0) {
+      lines.push("    (no records yet)")
+      continue
+    }
+    const sortedDates = Object.keys(entries).sort()
+    for (const d of sortedDates) {
+      const e = entries[d]
+      lines.push(`    ${d}  $${e.amountUsd} USDC (${e.network})`)
+    }
+  }
+  lines.push("")
+  return lines.join("\n")
+}
+

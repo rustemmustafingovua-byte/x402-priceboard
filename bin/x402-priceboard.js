@@ -6,10 +6,10 @@
  *   x402-priceboard --file endpoints.txt --markdown
  */
 import { readFileSync, existsSync } from "node:fs"
-import { board, toMarkdown } from "../src/index.js"
+import { board, toMarkdown, loadHistory, recordHistory, formatHistory } from "../src/index.js"
 
 // --- CLI shell: --help / --version -------------------------------------------
-const HELP = "x402-priceboard — The price list of x402 endpoints, without paying anything.\n\nUSAGE\n  x402-priceboard https://api.venice.ai/api/v1/chat/completions\n  x402-priceboard --file endpoints.txt --markdown\n\nCOMMANDS / OPTIONS\n  --file <path>  read the endpoint list from a file\n  --post         send POST instead of GET when probing\n  --markdown     render the board as Markdown\n\nMIT · https://github.com/rustemmustafingovua-byte"
+const HELP = "x402-priceboard — The price list of x402 endpoints, without paying anything.\n\nUSAGE\n  x402-priceboard https://api.venice.ai/api/v1/chat/completions\n  x402-priceboard --file endpoints.txt --markdown\n  x402-priceboard --history [url...]\n\nCOMMANDS / OPTIONS\n  --file <path>  read the endpoint list from a file\n  --post         send POST instead of GET when probing\n  --markdown     render the board as Markdown\n  --history      print historical price series per endpoint\n\nMIT · https://github.com/rustemmustafingovua-byte"
 const VERSION = "0.1.0"
 if (process.argv.includes("--help") || process.argv.includes("-h")) {
   console.log(HELP)
@@ -20,8 +20,8 @@ if (process.argv.includes("--version") || process.argv.includes("-V")) {
   process.exit(0)
 }
 
-
 const argv = process.argv.slice(2)
+const isHistory = argv.includes("--history")
 const arg = (n, d) => {
   const i = argv.indexOf(n)
   return i >= 0 ? argv[i + 1] : d
@@ -30,12 +30,26 @@ let urls = argv.filter((a) => a.startsWith("http"))
 const f = arg("--file")
 if (f && existsSync(f)) urls.push(...readFileSync(f, "utf8").split("\n").map((s) => s.trim()).filter(Boolean))
 
+if (isHistory && !urls.length) {
+  const store = loadHistory()
+  console.log(formatHistory(store))
+  process.exit(0)
+}
+
 if (!urls.length) {
-  console.error("usage: x402-priceboard <url> [url...] | --file endpoints.txt")
+  console.error("usage: x402-priceboard <url> [url...] | --file endpoints.txt | --history")
   process.exit(2)
 }
 
 const data = await board(urls, { method: argv.includes("--post") ? "POST" : "GET", body: argv.includes("--post") ? {} : undefined })
+recordHistory(data.cheapest)
+
+if (isHistory) {
+  const store = loadHistory()
+  console.log(formatHistory(store, urls))
+  process.exit(0)
+}
+
 if (argv.includes("--markdown")) {
   console.log(toMarkdown(data))
 } else {
